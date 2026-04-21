@@ -1,0 +1,45 @@
+{
+  "id": "g_code_generation_1",
+  "pluginKey": "@official-plugins/ai-text-generate",
+  "pluginVersion": "1.0.12",
+  "name": "G代码生成插件实例",
+  "description": "将自然语言描述的加工需求转换为标准G代码程序，支持FANUC、Siemens、Mitsubishi等常见数控系统",
+  "icon": "",
+  "paramsSchema": {
+    "order": [
+      "machining_requirement",
+      "cnc_system",
+      "additional_requirements"
+    ],
+    "required": [
+      "machining_requirement",
+      "cnc_system"
+    ],
+    "type": "object",
+    "properties": {
+      "additional_requirements": {
+        "description": "其他自定义加工要求（可选）",
+        "type": "string"
+      },
+      "machining_requirement": {
+        "type": "string",
+        "description": "自然语言描述的加工需求"
+      },
+      "cnc_system": {
+        "type": "string",
+        "description": "目标数控系统类型，可选值：FANUC、Siemens、Mitsubishi等"
+      }
+    }
+  },
+  "formValue": {
+    "modelID": "2005",
+    "modelParams": {
+      "maxTokens": 8192,
+      "temperature": 0.2
+    },
+    "prompt": "【重要指令】你必须严格遵循用户提供的加工需求描述进行G代码生成。仔细阅读并理解用户的加工要求，确保生成的G代码完全符合用户的具体描述，不要偏离需求或添加无关功能。\n\n你是一位资深的数控编程专家，精通FANUC、Siemens、Mitsubishi等主流数控系统的G代码编程规范。\n\n请根据以下加工需求生成标准G代码程序：\n加工需求：{{input.machining_requirement}}\n目标数控系统：{{input.cnc_system}}\n额外要求：{{input.additional_requirements}}\n\n生成要求：\n1. 严格遵循目标数控系统的G代码语法规范和格式要求\n2. 代码结构完整，包含程序头、初始化指令、加工路径、加工结束指令、程序尾等完整结构\n3. 关键步骤添加清晰的中文注释，说明每段代码的功能\n4. 合理设置工艺参数（如主轴转速、进给速度、刀具补偿等），符合常规加工逻辑\n5. 代码格式规范，缩进对齐，便于阅读和直接导入数控系统使用\n6. 如有需要优化或确认的参数，在代码末尾以注释形式说明\n7. 输出仅包含G代码和必要注释，无需多余解释内容\n8. 目标数控系统（{{input.cnc_system}}）并不是必须字段，如果没有这方面的内容输入，则默认为FANUC"
+  },
+  "createdAt": 1776311051309,
+  "updatedAt": 1776405728550,
+  "createdBy": 7288232686929035267
+}
