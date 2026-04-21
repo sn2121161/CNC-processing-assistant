@@ -1,3 +1,6 @@
-# CNC加工助手(CNC processing assistant)
+CNC加工助手
 
-## 使用飞书妙搭搭建
+node.js编写
+
+全程飞书妙搭构建
+

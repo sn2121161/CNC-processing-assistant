@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: cnc-machining-assistant
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: cd dist && NODE_ENV=production SERVER_HOST=0.0.0.0 SERVER_PORT=$PORT node server/main.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SERVER_HOST
+        value: 0.0.0.0
+      - key: SUDA_DATABASE_URL
+        sync: false
+      - key: LOG_REQUEST_BODY
+        value: "true"
+      - key: LOG_RESPONSE_BODY
+        value: "true"

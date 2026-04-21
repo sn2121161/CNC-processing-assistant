@@ -107,7 +107,7 @@ const HomePage: React.FC = () => {
           
           {/* 主标题 */}
           <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-[#1E293B] mb-4">
-            {appName || 'CNC加工助手'}
+            CNC加工助手
           </h1>
           
           {/* 副标题 */}
