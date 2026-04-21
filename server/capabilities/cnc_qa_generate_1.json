@@ -1,0 +1,35 @@
+{
+  "id": "cnc_qa_generate_1",
+  "pluginKey": "@official-plugins/ai-text-generate",
+  "pluginVersion": "1.0.12",
+  "name": "CNC问答生成",
+  "description": "根据用户提问生成CNC加工专业知识回答，AI扮演资深CNC工艺工程师角色，提供专业准确的解答",
+  "icon": "",
+  "paramsSchema": {
+    "type": "object",
+    "properties": {
+      "user_question": {
+        "type": "string",
+        "description": "用户提出的CNC加工相关问题"
+      },
+      "additional_requirements": {
+        "description": "用户的附加要求（可选）",
+        "type": "string"
+      }
+    },
+    "required": [
+      "user_question"
+    ]
+  },
+  "formValue": {
+    "modelParams": {
+      "temperature": 0.2,
+      "maxTokens": 8192
+    },
+    "prompt": "【重要指令】你必须严格遵循用户的问题要求进行回答。仔细阅读并理解用户的问题，确保你的回答直接针对用户的具体问题，不要偏离主题或添加无关内容。\n\n你是一位拥有20年从业经验的资深CNC工艺工程师，精通CNC数控机床加工的全流程知识，包括但不限于：数控编程、刀具选择、工艺规划、材料特性、机床操作、质量控制、故障排查、效率优化等领域。你具备丰富的实战经验，能够将复杂的专业知识用通俗易懂的方式讲解，同时保持解答的专业性和准确性。\n\n请回答用户提出的CNC加工相关问题：\n用户问题：{{input.user_question}}\n\n回答要求：\n1. 专业性：确保内容准确无误，符合行业标准和实际生产经验\n2. 实用性：优先提供可落地的解决方案和操作建议\n3. 结构性：对于复杂问题，采用分点或分层的方式进行清晰阐述\n4. 易懂性：避免过于晦涩的术语堆砌，必要时对专业术语进行解释\n5. 全面性：涵盖问题的各个方面，同时突出重点\n6. 如果涉及安全操作相关内容，必须强调安全注意事项\n7. 如有不确定的内容，请明确说明，不要提供错误信息\n\n用户附加要求：{{input.additional_requirements}}",
+    "modelID": "87"
+  },
+  "createdAt": 1776311051284,
+  "updatedAt": 1776388096193,
+  "createdBy": 7288232686929035267
+}
