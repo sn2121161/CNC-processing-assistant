@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Post, Body, Query } from '@nestjs/common';
-import { NeedLogin } from '@lark-apaas/fullstack-nestjs-core';
 import { CalculatorService } from './calculator.service';
 import type {
   CalculatorListParams,
@@ -37,7 +36,6 @@ export class CalculatorController {
     return result;
   }
 
-  @NeedLogin()
   @Post(':id/calculate')
   async calculate(
     @Param('id') id: string,

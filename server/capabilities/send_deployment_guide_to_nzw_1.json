@@ -1,0 +1,41 @@
+{
+  "id": "send_deployment_guide_to_nzw_1",
+  "pluginKey": "@official-plugins/send-feishu-message",
+  "pluginVersion": "1.0.23",
+  "name": "发送部署指南到倪正文飞书",
+  "description": "将部署指南文档发送给用户倪正文的飞书账号",
+  "icon": "",
+  "paramsSchema": {
+    "type": "object",
+    "properties": {
+      "receiverUserList": {
+        "type": "array",
+        "description": "飞书接收人用户ID列表",
+        "items": {
+          "type": "string",
+          "description": "飞书用户ID"
+        }
+      },
+      "deployment_guide_content": {
+        "description": "部署指南文档内容",
+        "type": "string"
+      }
+    },
+    "required": [
+      "deployment_guide_content"
+    ]
+  },
+  "formValue": {
+    "title": {
+      "title": "部署指南文档",
+      "titleColor": "wathet"
+    },
+    "content": "{{input.deployment_guide_content}}",
+    "receiverUserList": "{{input.receiverUserList}}",
+    "sender": "bot",
+    "buttons": []
+  },
+  "createdAt": 1776839697674,
+  "updatedAt": 1776840266529,
+  "createdBy": 7288232686929035267
+}

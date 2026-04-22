@@ -6,7 +6,7 @@ import { Input } from '@client/src/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@client/src/components/ui/card';
 import { Badge } from '@client/src/components/ui/badge';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@client/src/components/ui/empty';
-import { getKnowledgeBaseList, createRecentAccess } from '@client/src/api';
+import { getKnowledgeBaseList, createRecentAccess, getClientId } from '@client/src/api';
 import type { KnowledgeBaseListItem, KnowledgeCategory } from '@shared/api.interface';
 import { logger } from '@lark-apaas/client-toolkit/logger';
 
@@ -120,6 +120,7 @@ const KnowledgeBasePage: React.FC = () => {
         resourceType: 'knowledge',
         resourceId: item.id,
         resourceTitle: item.title,
+        clientId: getClientId(),
       });
     } catch (error) {
       logger.error('记录访问失败', error);

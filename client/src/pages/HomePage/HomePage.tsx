@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppInfo } from '@lark-apaas/client-toolkit/hooks/useAppInfo';
-import { useCurrentUserProfile } from '@lark-apaas/client-toolkit/hooks/useCurrentUserProfile';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@client/src/components/ui/card';
 import { Button } from '@client/src/components/ui/button';
 import { Badge } from '@client/src/components/ui/badge';
-import { UserDisplay } from '@client/src/components/business-ui/user-display';
 import {
   BookOpen,
   Bot,
@@ -16,9 +13,8 @@ import {
   ChevronRight,
   Sparkles,
 } from 'lucide-react';
-import { getRecentAccess } from '@client/src/api';
+import { getRecentAccess, getClientId } from '@client/src/api';
 import type { RecentAccess } from '@shared/api.interface';
-
 const featureCards = [
   {
     title: '知识库',
@@ -51,8 +47,6 @@ const featureCards = [
 ];
 
 const HomePage: React.FC = () => {
-  const { appName } = useAppInfo();
-  const userInfo = useCurrentUserProfile();
   const navigate = useNavigate();
   const [recentAccess, setRecentAccess] = useState<RecentAccess[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,7 +54,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchRecentAccess = async () => {
       setLoading(true);
-      const items = await getRecentAccess(10);
+      const items = await getRecentAccess(10, getClientId());
       setRecentAccess(items);
       setLoading(false);
     };
@@ -78,6 +72,8 @@ const HomePage: React.FC = () => {
       navigate(`/calculator/${item.resourceId}`);
     }
   };
+
+
 
   const getTypeLabel = (type: string) => {
     switch (type) {
@@ -114,14 +110,7 @@ const HomePage: React.FC = () => {
           <p className="text-lg text-[#64748B] max-w-xl mb-8 leading-relaxed">
             数控加工知识库、AI辅助、参数计算一站式平台，助力加工人员提升工作效率
           </p>
-          
-          {/* 用户欢迎 */}
-          {userInfo?.user_id && (
-            <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-white/50 w-fit">
-              <span className="text-sm text-[#64748B]">欢迎回来，</span>
-              <UserDisplay value={[userInfo.user_id]} size="medium" />
-            </div>
-          )}
+
         </div>
       </section>
 

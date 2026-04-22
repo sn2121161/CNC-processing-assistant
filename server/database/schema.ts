@@ -150,32 +150,9 @@ export const calculator = pgTable("calculator", {
 }, (table) => [
   index("idx_calculator_category").using("btree", table.category.asc().nullsLast().op("text_ops")),
   index("idx_calculator_name").using("btree", table.name.asc().nullsLast().op("text_ops")),
-  pgPolicy("修改本人数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"], using: sql`((current_setting('app.user_id'::text) = ANY (ARRAY[]::text[])) AND (current_setting('app.user_id'::text) = (_created_by)::text))` }),
-  pgPolicy("查看全部数据", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("修改全部数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("service_role_bypass_policy", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"] }),
-]);
-
-export const recentAccess = pgTable("recent_access", {
-  id: uuid().defaultRandom().notNull(),
-  userId: userProfile("user_id").notNull(),
-  resourceType: varchar("resource_type", { length: 255 }).notNull(),
-  resourceId: varchar("resource_id", { length: 255 }).notNull(),
-  resourceTitle: varchar("resource_title", { length: 255 }),
-  // System field: Creation time (auto-filled, do not modify)
-  createdAt: customTimestamptz('_created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-  // System field: Creator (auto-filled, do not modify)
-  createdBy: userProfile("_created_by"),
-  // System field: Update time (auto-filled, do not modify)
-  updatedAt: customTimestamptz('_updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-  // System field: Updater (auto-filled, do not modify)
-  updatedBy: userProfile("_updated_by"),
-}, (table) => [
-  index("idx_recent_access_user").using("btree", sql`((user_id).user_id)`),
-  pgPolicy("修改本人数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"], using: sql`((current_setting('app.user_id'::text) = ANY (ARRAY[]::text[])) AND (current_setting('app.user_id'::text) = (_created_by)::text))` }),
-  pgPolicy("查看全部数据", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("修改全部数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("service_role_bypass_policy", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"] }),
+  pgPolicy("service_role_bypass_policy_calculator", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"], using: sql`true`, withCheck: sql`true` }),
+  pgPolicy("查看全部数据_calculator", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
+  pgPolicy("匿名用户写入_calculator", { as: "permissive", for: "all", to: ["anon_workspace_aadj3zvfjisds"] }),
 ]);
 
 export const knowledgeBase = pgTable("knowledge_base", {
@@ -201,10 +178,30 @@ export const knowledgeBase = pgTable("knowledge_base", {
 }, (table) => [
   index("idx_knowledge_category").using("btree", table.category.asc().nullsLast().op("text_ops")),
   index("idx_knowledge_title").using("btree", table.title.asc().nullsLast().op("text_ops")),
-  pgPolicy("修改本人数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"], using: sql`((current_setting('app.user_id'::text) = ANY (ARRAY[]::text[])) AND (current_setting('app.user_id'::text) = (_created_by)::text))` }),
-  pgPolicy("查看全部数据", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("修改全部数据", { as: "permissive", for: "all", to: ["authenticated_workspace_aadj3zvfjisds"] }),
-  pgPolicy("service_role_bypass_policy", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"] }),
+  pgPolicy("service_role_bypass_policy_knowledge_base", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"], using: sql`true`, withCheck: sql`true` }),
+  pgPolicy("查看全部数据_knowledge_base", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
+  pgPolicy("匿名用户写入_knowledge_base", { as: "permissive", for: "all", to: ["anon_workspace_aadj3zvfjisds"] }),
+]);
+
+export const recentAccess = pgTable("recent_access", {
+  id: uuid().defaultRandom().notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  resourceType: varchar("resource_type", { length: 255 }).notNull(),
+  resourceId: varchar("resource_id", { length: 255 }).notNull(),
+  resourceTitle: varchar("resource_title", { length: 255 }),
+  // System field: Creation time (auto-filled, do not modify)
+  createdAt: customTimestamptz('_created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  // System field: Creator (auto-filled, do not modify)
+  createdBy: userProfile("_created_by"),
+  // System field: Update time (auto-filled, do not modify)
+  updatedAt: customTimestamptz('_updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  // System field: Updater (auto-filled, do not modify)
+  updatedBy: userProfile("_updated_by"),
+}, (table) => [
+  index("idx_recent_access_user").using("btree", table.userId.asc().nullsLast().op("text_ops")),
+  pgPolicy("service_role_bypass_policy_recent_access", { as: "permissive", for: "all", to: ["service_role_workspace_aadj3zvfjisds"], using: sql`true`, withCheck: sql`true` }),
+  pgPolicy("查看全部数据_recent_access", { as: "permissive", for: "select", to: ["anon_workspace_aadj3zvfjisds", "authenticated_workspace_aadj3zvfjisds"] }),
+  pgPolicy("匿名用户写入_recent_access", { as: "permissive", for: "all", to: ["anon_workspace_aadj3zvfjisds"] }),
 ]);
 
 // table aliases

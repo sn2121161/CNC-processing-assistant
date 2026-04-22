@@ -1,6 +1,4 @@
-import { Controller, Get, Post, Query, Body, Req } from '@nestjs/common';
-import { NeedLogin } from '@lark-apaas/fullstack-nestjs-core';
-import type { Request } from 'express';
+import { Controller, Get, Post, Query, Body } from '@nestjs/common';
 import { RecentAccessService } from './recent-access.service';
 import type {
   RecentAccessListParams,
@@ -14,21 +12,19 @@ export class RecentAccessController {
   constructor(private readonly recentAccessService: RecentAccessService) {}
 
   @Get()
-  async list(@Req() req: Request, @Query('limit') limit?: string): Promise<RecentAccessListResp> {
-    const userId = req.userContext.userId;
+  async list(@Query('clientId') clientId?: string, @Query('limit') limit?: string): Promise<RecentAccessListResp> {
+    const effectiveClientId: string = clientId || 'anonymous';
     const params: RecentAccessListParams = {
       limit: limit ? parseInt(limit, 10) : 10,
     };
-    return this.recentAccessService.list(userId, params);
+    return this.recentAccessService.list(effectiveClientId, params);
   }
 
-  @NeedLogin()
   @Post()
   async create(
-    @Req() req: Request,
     @Body() body: RecentAccessCreateReq,
   ): Promise<RecentAccessCreateResp> {
-    const userId = req.userContext.userId;
-    return this.recentAccessService.create(userId, body);
+    const clientId: string = body.clientId || 'anonymous';
+    return this.recentAccessService.create(clientId, body);
   }
 }

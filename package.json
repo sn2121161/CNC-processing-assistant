@@ -204,6 +204,7 @@
     "npm": ">=10.0.0"
   },
   "actionPlugins": {
-    "@official-plugins/ai-text-generate": "1.0.12"
+    "@official-plugins/ai-text-generate": "1.0.12",
+    "@official-plugins/send-feishu-message": "1.0.23"
   }
 }

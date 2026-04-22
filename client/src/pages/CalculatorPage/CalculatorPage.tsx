@@ -5,7 +5,7 @@ import { Button } from '@client/src/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@client/src/components/ui/card';
 import { Badge } from '@client/src/components/ui/badge';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@client/src/components/ui/empty';
-import { getCalculatorList, createRecentAccess } from '@client/src/api';
+import { getCalculatorList, createRecentAccess, getClientId } from '@client/src/api';
 import type { CalculatorListItem, CalculatorCategory } from '@shared/api.interface';
 import { logger } from '@lark-apaas/client-toolkit/logger';
 
@@ -51,6 +51,7 @@ const CalculatorPage: React.FC = () => {
         resourceType: 'calculator',
         resourceId: item.id,
         resourceTitle: item.name,
+        clientId: getClientId(),
       });
     } catch (error) {
       logger.error('记录访问失败', error);

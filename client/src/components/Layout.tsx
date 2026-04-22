@@ -1,25 +1,13 @@
 import React from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAppInfo } from '@lark-apaas/client-toolkit/hooks/useAppInfo';
-import { useCurrentUserProfile } from '@lark-apaas/client-toolkit/hooks/useCurrentUserProfile';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@client/src/components/ui/dropdown-menu';
 import { Button } from '@client/src/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@client/src/components/ui/avatar';
-import { getDataloom } from '@lark-apaas/client-toolkit/dataloom';
-import { logger } from '@lark-apaas/client-toolkit/logger';
 import {
   Home,
   BookOpen,
   Bot,
   Code,
   Calculator,
-  LogOut,
-  User,
   Menu,
   X,
 } from 'lucide-react';
@@ -34,34 +22,16 @@ const navItems = [
 
 const Layout: React.FC = () => {
   const { appName, appLogo } = useAppInfo();
-  const userInfo = useCurrentUserProfile();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-  const handleLogout = async () => {
-    const dataloom = await getDataloom();
-    const result = await dataloom.service.session.signOut();
-    if (result.error) {
-      logger.error('退出登录失败:', result.error.message);
-      return;
-    }
-    window.location.reload();
-  };
-
-  const handleLogin = async () => {
-    const dataloom = await getDataloom();
-    dataloom.service.session.redirectToLogin();
-  };
-
-  const isLoggedIn = !!userInfo?.user_id;
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* 顶部导航栏 - 暖调精致风格 */}
       <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-[#F3F4F6]">
-        <div className="flex h-16 items-center justify-between px-4 lg:px-8">
+        <div className="flex h-16 items-center px-4 lg:px-8">
           {/* Logo 和应用名称 */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-shrink-0">
             <div className="flex aspect-square size-10 items-center justify-center bg-[#1E293B] text-[#FACC15] font-black text-lg tracking-tighter rounded-full shadow-lg shadow-black/10">
               {appLogo ? (
                 <img src={appLogo} alt="logo" className="size-6" />
@@ -75,7 +45,7 @@ const Layout: React.FC = () => {
           </div>
 
           {/* 桌面端导航标签 */}
-          <nav className="hidden md:flex items-center gap-2 bg-[#F9FAFB] rounded-full p-1">
+          <nav className="hidden md:flex flex-1 items-center justify-center gap-2 bg-[#F9FAFB] rounded-full p-1">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -94,54 +64,8 @@ const Layout: React.FC = () => {
             ))}
           </nav>
 
-          {/* 用户信息和移动端菜单按钮 */}
-          <div className="flex items-center gap-3">
-            {/* 用户信息下拉菜单 */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="relative h-10 w-10 p-0 rounded-full border border-[#E5E7EB] hover:border-[#FACC15] hover:ring-2 hover:ring-[#FACC15]/30 transition-all duration-300"
-                >
-                  <Avatar className="h-9 w-9 rounded-full">
-                    <AvatarImage
-                      src={isLoggedIn ? userInfo?.avatar : 'https://lf3-static.bytednsdoc.com/obj/eden-cn/LMfspH/ljhwZthlaukjlkulzlp/miao/no-person.svg'}
-                      alt={isLoggedIn ? userInfo?.name : '游客'}
-                    />
-                    <AvatarFallback className="bg-[#F3F4F6] text-[#1E293B] font-bold rounded-full text-sm">
-                      {isLoggedIn ? userInfo?.name?.charAt(0) || 'U' : '游'}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white border border-[#F3F4F6] rounded-2xl shadow-xl p-2">
-                <div className="flex items-center gap-2 p-3 text-sm text-[#64748B]">
-                  <User className="w-4 h-4" />
-                  <span className="font-medium">
-                    {isLoggedIn ? userInfo?.name : '游客'}
-                  </span>
-                </div>
-                {isLoggedIn ? (
-                  <DropdownMenuItem 
-                    onClick={handleLogout} 
-                    className="text-[#1E293B] hover:bg-[#F9FAFB] cursor-pointer rounded-xl transition-colors"
-                  >
-                    <LogOut className="mr-2 w-4 h-4" />
-                    退出登录
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem 
-                    onClick={handleLogin}
-                    className="text-[#1E293B] hover:bg-[#F9FAFB] cursor-pointer rounded-xl transition-colors"
-                  >
-                    <User className="mr-2 w-4 h-4" />
-                    登录
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* 移动端菜单按钮 */}
+          {/* 右侧占位 + 移动端菜单按钮 */}
+          <div className="flex-shrink-0 flex items-center md:w-[130px] md:justify-end">
             <Button
               variant="ghost"
               size="icon"

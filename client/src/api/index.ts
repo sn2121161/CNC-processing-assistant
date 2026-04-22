@@ -118,9 +118,9 @@ export async function createRecentAccess(data: RecentAccessCreateReq): Promise<R
   }
 }
 
-export async function getRecentAccess(limit?: number): Promise<RecentAccess[]> {
+export async function getRecentAccess(limit?: number, clientId?: string): Promise<RecentAccess[]> {
   try {
-    const params: RecentAccessListParams = limit ? { limit } : {};
+    const params: RecentAccessListParams & { clientId?: string } = { limit, clientId };
     const response = await axiosForBackend({
       url: '/api/recent-access',
       method: 'GET',
@@ -132,4 +132,15 @@ export async function getRecentAccess(limit?: number): Promise<RecentAccess[]> {
     logger.error('获取最近访问失败', error);
     throw error;
   }
+}
+
+const CLIENT_ID_KEY = 'cnc_client_id';
+
+export function getClientId(): string {
+  let clientId = localStorage.getItem(CLIENT_ID_KEY);
+  if (!clientId) {
+    clientId = `anon_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+    localStorage.setItem(CLIENT_ID_KEY, clientId);
+  }
+  return clientId;
 }

@@ -133,6 +133,7 @@ export interface RecentAccess {
 
 export interface RecentAccessListParams {
   limit?: number;
+  clientId?: string;
 }
 
 export interface RecentAccessListResp {
@@ -143,6 +144,7 @@ export interface RecentAccessCreateReq {
   resourceType: ResourceType;
   resourceId: string;
   resourceTitle: string;
+  clientId: string;
 }
 
 export interface RecentAccessCreateResp {

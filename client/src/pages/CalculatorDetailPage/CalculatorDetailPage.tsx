@@ -14,7 +14,7 @@ import {
 } from '@client/src/components/ui/select';
 import { Badge } from '@client/src/components/ui/badge';
 import { Code, SquareFunction } from 'lucide-react';
-import { getCalculatorDetail, calculate, createRecentAccess } from '@client/src/api';
+import { getCalculatorDetail, calculate, createRecentAccess, getClientId } from '@client/src/api';
 import { Streamdown } from '@client/src/components/ui/streamdown';
 import type { Calculator, CalculatorInputField } from '@shared/api.interface';
 import { toast } from 'sonner';
@@ -422,6 +422,7 @@ const CalculatorDetailPage: React.FC = () => {
           resourceType: 'calculator',
           resourceId: id,
           resourceTitle: data.name,
+          clientId: getClientId(),
         });
       } catch (err) {
         logger.error('获取计算器详情失败', err);

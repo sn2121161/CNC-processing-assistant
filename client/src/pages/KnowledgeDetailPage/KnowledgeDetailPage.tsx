@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@client/src/components
 import { Badge } from '@client/src/components/ui/badge';
 import { Streamdown } from '@client/src/components/ui/streamdown';
 import { Image } from '@client/src/components/ui/image';
-import { getKnowledgeBaseDetail, getKnowledgeBaseRelevant, createRecentAccess } from '@client/src/api';
+import { getKnowledgeBaseDetail, getKnowledgeBaseRelevant, createRecentAccess, getClientId } from '@client/src/api';
+
 import type { KnowledgeBase, KnowledgeBaseRelevantResp, KnowledgeCategory } from '@shared/api.interface';
 import { logger } from '@lark-apaas/client-toolkit/logger';
 
@@ -54,6 +55,7 @@ const KnowledgeDetailPage: React.FC = () => {
           resourceType: 'knowledge',
           resourceId: id,
           resourceTitle: detailData.title,
+          clientId: getClientId(),
         });
       } catch (err) {
         logger.error('获取知识库详情失败', err);
